@@ -4,6 +4,6 @@ Tech Stack:
 
 Frontend: React
 
-Backend: Hono,Node.js
+Backend: Hono, Cloudflare Worker
 
 Database: Postgres(Neon)
