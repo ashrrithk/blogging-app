@@ -2,6 +2,8 @@ import { Hono } from "hono";
 import { decode, sign, verify } from 'hono/jwt'
 import { PrismaClient } from '@prisma/client/edge'
 import { withAccelerate } from '@prisma/extension-accelerate'
+import { createBlogInput, updateBlogInput } from "../../../common/src/index";
+
 
 export const blogRouter = new Hono<{
     Bindings:{
@@ -30,7 +32,7 @@ export const blogRouter = new Hono<{
  } catch(e){
     c.status(403);
     return c.json({
-        message: "You are not logged in"
+        message: "You are not logged"
     })
  }
 })
@@ -38,6 +40,14 @@ export const blogRouter = new Hono<{
   //create post
   blogRouter.post('/', async (c) => {
     const body = await c.req.json();
+    const { success } = createBlogInput.safeParse(body);
+    if (!success) {
+        c.status(411);
+        return c.json({
+            message: "Inputs not correct"
+        })
+    }
+
     const authorId = c.get("userId");
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
@@ -59,6 +69,13 @@ export const blogRouter = new Hono<{
   //update post
   blogRouter.put('/', async(c) => {
     const body = await c.req.json();
+    const { success } = updateBlogInput.safeParse(body);
+    if (!success) {
+        c.status(411);
+        return c.json({
+            message: "Inputs not correct"
+        })
+    }
     const prisma = new PrismaClient({
         datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate())
