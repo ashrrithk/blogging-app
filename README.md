@@ -1,9 +1,17 @@
-Building a Medium like blogging app
+Building a Medium-like blogging app
 
 Tech Stack:
 
-Frontend: React
+* React in the frontend
 
-Backend: Hono, Cloudflare Worker
+* Cloudflare workers in the backend
 
-Database: Postgres(Neon)
+* zod as the validation library, type inference for the frontend types
+
+* Typescript as the language
+
+* Prisma as the ORM, with connection pooling
+
+* Postgres as the database
+
+* jwt for authentication
